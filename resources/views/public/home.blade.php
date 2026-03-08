@@ -488,15 +488,15 @@
         </div>
         <div class="hero-info-item">
             <span class="hero-info-label">Jam Operasional</span>
-            <span class="hero-info-val"><span>10.00</span> – 02.00 WIB</span>
+            <span class="hero-info-val"><span>13.00</span> – 03.00 WIB</span>
         </div>
         <div class="hero-info-item">
             <span class="hero-info-label">Lokasi</span>
-            <span class="hero-info-val">Tebet, Jaksel</span>
+            <span class="hero-info-val">Jl. Prof. DR. Soepomo No.30, RT.13/RW.2, Tebet, Kota Jakarta Selatan</span>
         </div>
         <div class="hero-info-item">
             <span class="hero-info-label">Reservasi</span>
-            <span class="hero-info-val">WA / Walk-in</span>
+            <span class="hero-info-val">WhatsApp : 087770851998 / Walk-in</span>
         </div>
     </div>
 </section>
@@ -509,7 +509,7 @@
         <span class="sec-tag">Price List</span>
         <h2 class="sec-title">Pilihan <span>Room</span></h2>
         <p style="margin-top:.75rem;font-size:.85rem;color:var(--text-dim);max-width:500px;">
-            Semua harga per jam. Weekday: Senin–Kamis. Weekend: Jumat–Minggu &amp; Hari Libur.
+            Semua harga per jam. Weekday: Minggu–Rabu. Weekend: Kamis–Sabtu &amp; Hari Libur.
         </p>
 
         <div class="rooms-grid">
@@ -658,7 +658,7 @@
                         </div>
                         <div class="pkg-price-sub">/ paket</div>
                     </div>
-                    <a href="https://wa.me/6287770851998?text=Halo+Masterpiece,+saya+ingin+booking+{{ urlencode($pkg->name) }}"
+                    <a href="https://wa.me/+6287770851998?text=Halo+Masterpiece,+saya+ingin+booking+{{ urlencode($pkg->name) }}"
                        target="_blank" class="btn-book">Book &rarr;</a>
                 </div>
             </div>
@@ -666,7 +666,7 @@
         </div>
 
         <p style="margin-top:2rem;font-size:.72rem;color:var(--text-muted);text-align:center;">
-            * Syarat dan ketentuan berlaku &nbsp;·&nbsp; Harga belum termasuk pajak &nbsp;·&nbsp; Berlaku mulai jam 13.00 s/d 16.00
+            * Syarat dan ketentuan berlaku &nbsp;·&nbsp; Harga belum termasuk pajak &nbsp;·&nbsp;
         </p>
     </div>
 </section>
@@ -733,20 +733,18 @@
         <div class="info-grid">
             <div class="info-card">
                 <div class="info-card-title">🕐 Jam Operasional</div>
-                <div class="info-row"><span class="label">Senin – Kamis</span><span class="val">10.00 – 00.00 WIB</span></div>
-                <div class="info-row"><span class="label">Jumat</span><span class="val">10.00 – 02.00 WIB</span></div>
-                <div class="info-row"><span class="label">Sabtu</span><span class="val hot">10.00 – 02.00 WIB</span></div>
-                <div class="info-row"><span class="label">Minggu</span><span class="val hot">10.00 – 00.00 WIB</span></div>
+                <div class="info-row"><span class="label">Minggu – Rabu</span><span class="val">13.00 – 02.00 WIB</span></div>
+                <div class="info-row"><span class="label">Kamis-Sabtu(Weekend)</span><span class="val">13.00 – 03.00 WIB</span></div>
                 <div class="info-row"><span class="label">Hari Libur</span><span class="val hot">Mengikuti jadwal weekend</span></div>
             </div>
 
             <div class="info-card">
                 <div class="info-card-title">📍 Lokasi & Kontak</div>
-                <div class="info-row"><span class="label">Alamat</span><span class="val">Jl. Tebet, Jakarta Selatan</span></div>
-                <div class="info-row"><span class="label">WhatsApp</span><span class="val hot">+62 xxx-xxxx-xxxx</span></div>
-                <div class="info-row"><span class="label">Instagram</span><span class="val">@masterpiece.karaoke</span></div>
+                <div class="info-row"><span class="label">Alamat</span><span class="val">Jl. Prof. DR. Soepomo No.30, RT.13/RW.2, Tebet, Kota Jakarta Selatan</span></div>
+                <div class="info-row"><span class="label">WhatsApp</span><span class="val hot">+62 877-7085-1998</span></div>
+                <div class="info-row"><span class="label">Instagram</span><span class="val">@masterpiece.tebet</span></div>
                 <div class="info-row"><span class="label">Parkir</span><span class="val">Tersedia (Motor & Mobil)</span></div>
-                <div class="info-row"><span class="label">Pembayaran</span><span class="val">Cash, Transfer, QRIS</span></div>
+                <div class="info-row"><span class="label">Pembayaran</span><span class="val">Cash, Transfer, QRIS, Debit</span></div>
             </div>
 
             <div class="info-card">

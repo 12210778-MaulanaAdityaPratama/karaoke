@@ -170,8 +170,8 @@
      style="height: 60px; width: auto;
             filter: drop-shadow(0 0 12px rgba(255,45,120,0.25));
             display: block; margin: 0 auto 3rem ;">
-    <p>Jl. Tebet, Jakarta Selatan &nbsp;·&nbsp; Buka setiap hari 10.00 – 02.00 WIB</p>
-    <p style="margin-top:1.5rem;">&copy; {{ date('Y') }} Masterpiece Signature Karaoke</p>
+    <p>Jl. Prof. DR. Soepomo No.30, RT.13/RW.2, Tebet, Kota Jakarta Selatan &nbsp;·&nbsp; Buka setiap hari 13.00 – 02.00 WIB</p>
+    <p style="margin-top:1.5rem;">&copy; {{ date('Y') }} Masterpiece Signature Karaoke Tebet</p>
 </footer>
 
 @stack('scripts')

@@ -1,4 +1,0 @@
-# database/backups/.gitignore
-*
-!.gitignore
-!backup-latest.sql
