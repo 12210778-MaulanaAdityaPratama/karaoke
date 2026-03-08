@@ -165,7 +165,11 @@
 @yield('content')
 
 <footer class="footer">
-    <div class="footer-brand">MASTER<span>PIECE</span> SIGNATURE</div>
+    <img src="{{ asset('images/logo.png') }}"
+     alt="Masterpiece Signature Karaoke"
+     style="height: 60px; width: auto;
+            filter: drop-shadow(0 0 12px rgba(255,45,120,0.25));
+            display: block; margin: 0 auto 3rem ;">
     <p>Jl. Tebet, Jakarta Selatan &nbsp;·&nbsp; Buka setiap hari 10.00 – 02.00 WIB</p>
     <p style="margin-top:1.5rem;">&copy; {{ date('Y') }} Masterpiece Signature Karaoke</p>
 </footer>
