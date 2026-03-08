@@ -1,6 +1,13 @@
 <x-guest-layout>
     <!-- Session Status -->
     <x-auth-session-status class="mb-4" :status="session('status')" />
+    @if(session('message'))
+    <div style="background:rgba(255,45,120,0.1);border-left:3px solid #FF2D78;
+                padding:.85rem 1.25rem;margin-bottom:1.5rem;
+                font-size:.82rem;color:#FF2D78;">
+        {{ session('message') }}
+    </div>
+@endif
 
     <form method="POST" action="{{ route('login') }}">
         @csrf

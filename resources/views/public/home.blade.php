@@ -459,10 +459,11 @@
 
     <div class="hero-content">
         <div class="hero-badge">Masterpiece · Tebet · Jakarta Selatan</div>
-        <h1 class="hero-title">
-            <span class="purp">MASTER</span><span class="pink">PIECE</span><br>
-            SIGNATURE
-        </h1>
+        <img src="{{ asset('images/logo.png') }}" 
+     alt="Masterpiece Signature Karaoke"
+     style="display:block; max-width: 480px; width: 85%; margin: 0 auto 1.5rem;
+            filter: drop-shadow(0 0 30px rgba(255,45,120,0.3));
+            animation: fadeUp 1s .1s ease both;">
         <p class="hero-subtitle-line">KARAOKE &amp; ENTERTAINMENT</p>
         <p class="hero-desc">
             Nikmati pengalaman karaoke terbaik bersama keluarga dan sahabat.
@@ -473,6 +474,7 @@
             <a href="#rooms"    class="btn-neon btn-neon-outline">Pilih Room</a>
         </div>
     </div>
+    
 
     <div class="hero-info-strip">
         <div class="hero-info-item">

@@ -57,11 +57,13 @@
             padding: 0 2rem;
         }
         .nav-brand {
-            font-family: var(--ff-display);
-            font-size: 1.4rem; letter-spacing: 0.12em;
-            color: var(--text); text-decoration: none; line-height: 1;
-        }
-        .nav-brand span { color: var(--neon-pink); }
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+}
+.nav-brand img:hover {
+    filter: drop-shadow(0 0 12px rgba(255,45,120,0.5));
+}
         .nav-links { display: flex; align-items: center; gap: 0.25rem; }
         .nav-links a {
             font-size: 0.72rem; letter-spacing: 0.18em; text-transform: uppercase;
@@ -134,8 +136,13 @@
 <body>
 
 <nav class="nav">
-    <a href="{{ route('home') }}" class="nav-brand">MASTER<span>PIECE</span></a>
-    <div class="nav-links">
+<a href="{{ route('home') }}" class="nav-brand">
+    <img src="{{ asset('images/logo.png') }}" 
+         alt="Masterpiece Signature Karaoke"
+         style="height: 44px; width: auto; 
+                filter: drop-shadow(0 0 8px rgba(255,45,120,0.2));
+                transition: filter .2s;">
+</a>    <div class="nav-links">
         <a href="{{ route('home') }}#rooms"    class="">Rooms</a>
         <a href="{{ route('home') }}#packages" class="">Paket</a>
         <a href="{{ route('home') }}#fnb"      class="">F&amp;B</a>

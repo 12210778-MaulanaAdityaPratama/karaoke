@@ -12,7 +12,7 @@ use App\Http\Controllers\Admin\FnbController;
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
 // ── Admin ─────────────────────────────────────────────────────────────────────
-Route::prefix('admin')->name('admin.')->middleware(['auth'])->group(function () {
+Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin.timeout'])->group(function () {
 
     Route::get('/', fn() => redirect()->route('admin.packages.index')); // ← atau packages.index
 
