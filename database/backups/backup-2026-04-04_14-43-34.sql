@@ -198,6 +198,39 @@ UNLOCK TABLES;
 commit;
 
 --
+-- Table structure for table `gallery_photos`
+--
+
+DROP TABLE IF EXISTS `gallery_photos`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8mb4 */;
+CREATE TABLE `gallery_photos` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `submitter_name` varchar(255) NOT NULL DEFAULT 'Anonim',
+  `caption` varchar(255) DEFAULT NULL,
+  `image_path` varchar(255) NOT NULL,
+  `status` enum('pending','approved','rejected') NOT NULL DEFAULT 'pending',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `gallery_photos`
+--
+
+LOCK TABLES `gallery_photos` WRITE;
+/*!40000 ALTER TABLE `gallery_photos` DISABLE KEYS */;
+set autocommit=0;
+INSERT INTO `gallery_photos` VALUES
+(1,'peter','jadi gini','gallery/3TLiWjC1kLMtftIjlXfsL9LsNMAasifYP1UydtH4.jpg','approved','2026-04-04 06:06:06','2026-04-04 06:07:40'),
+(3,'coba','jadi gini le..','gallery/5hjXLSKObC7XdHmNlUubvbp824Ie41Z2TqOR0XNC.webp','approved','2026-04-04 07:19:29','2026-04-04 07:19:40');
+/*!40000 ALTER TABLE `gallery_photos` ENABLE KEYS */;
+UNLOCK TABLES;
+commit;
+
+--
 -- Table structure for table `job_batches`
 --
 
@@ -273,7 +306,7 @@ CREATE TABLE `migrations` (
   `migration` varchar(255) NOT NULL,
   `batch` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -290,7 +323,9 @@ INSERT INTO `migrations` VALUES
 (4,'2024_01_01_000001_create_packages_with_tiers',1),
 (5,'2024_01_01_000001_create_rooms_table',1),
 (6,'2024_01_01_000003_create_fnb_tables',1),
-(7,'2026_03_05_155219_add_image_to_packages',2);
+(7,'2026_03_05_155219_add_image_to_packages',2),
+(8,'2026_04_04_000001_create_gallery_photos_table',3),
+(9,'2026_04_04_000002_create_reservations_table',4);
 /*!40000 ALTER TABLE `migrations` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
@@ -316,7 +351,7 @@ CREATE TABLE `package_tiers` (
   PRIMARY KEY (`id`),
   KEY `package_tiers_package_id_foreign` (`package_id`),
   CONSTRAINT `package_tiers_package_id_foreign` FOREIGN KEY (`package_id`) REFERENCES `packages` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -327,17 +362,26 @@ LOCK TABLES `package_tiers` WRITE;
 /*!40000 ALTER TABLE `package_tiers` DISABLE KEYS */;
 set autocommit=0;
 INSERT INTO `package_tiers` VALUES
-(1,1,'Bronze','#CD7F32',300000.00,NULL,1,1,'2026-03-04 11:05:23','2026-03-04 11:05:23'),
-(2,1,'Silver','#A8A9AD',350000.00,NULL,1,2,'2026-03-04 11:05:23','2026-03-04 11:05:23'),
-(3,1,'Gold','#FFD700',450000.00,'Best Value',1,3,'2026-03-04 11:05:23','2026-03-04 11:05:23'),
-(4,2,'Bronze','#CD7F32',400000.00,NULL,1,1,'2026-03-04 11:05:23','2026-03-04 11:05:23'),
-(5,2,'Silver','#A8A9AD',500000.00,NULL,1,2,'2026-03-04 11:05:23','2026-03-04 11:05:23'),
-(6,2,'Gold','#FFD700',650000.00,'Best Seller',1,3,'2026-03-04 11:05:23','2026-03-04 11:05:23'),
-(7,3,'Bronze','#CD7F32',600000.00,NULL,1,1,'2026-03-04 11:05:23','2026-03-04 11:05:23'),
-(8,3,'Silver','#A8A9AD',750000.00,NULL,1,2,'2026-03-04 11:05:23','2026-03-04 11:05:23'),
-(9,3,'Gold','#FFD700',950000.00,'Recommended',1,3,'2026-03-04 11:05:23','2026-03-04 11:05:23'),
-(10,1,'Platinum','#bfb5ab',5000.00,'Best Seller',1,0,'2026-03-04 11:33:43','2026-03-04 11:33:43'),
-(11,4,'bronze','#CD7F32',5000.00,NULL,1,0,'2026-03-04 11:35:31','2026-03-04 11:35:31');
+(12,1,'Bronze','#b5835a',300000.00,'Best Seller',1,1,'2026-03-26 12:14:25','2026-03-26 12:14:25'),
+(13,1,'Silver','#c0bfbc',350000.00,'Recommended',1,2,'2026-03-26 12:16:03','2026-03-26 12:16:03'),
+(14,1,'Gold','#f5c211',450000.00,NULL,1,3,'2026-03-26 12:17:01','2026-03-26 12:17:01'),
+(15,5,'Bronze','#b5835a',400000.00,NULL,1,1,'2026-03-26 12:22:17','2026-03-26 12:23:01'),
+(16,5,'Silver','#f6f5f4',500000.00,'Best Seller',1,2,'2026-03-26 12:24:22','2026-03-26 12:24:22'),
+(17,5,'Gold','#f9f06b',600000.00,'Recommended',1,3,'2026-03-26 12:25:31','2026-03-26 12:25:31'),
+(18,6,'Regular','#62a0ea',1350000.00,'Recommended',1,3,'2026-03-26 12:47:02','2026-03-26 12:47:02'),
+(19,7,'Wiskey','#1c71d8',2999000.00,'Pilih Salah Satu',1,0,'2026-03-26 13:15:21','2026-03-26 13:22:23'),
+(20,7,'Tequilla','#77767b',2999000.00,'Pilih Salah Satu',1,2,'2026-03-26 13:20:18','2026-03-26 13:22:10'),
+(21,7,'Gin','#613583',3399000.00,'Pilih Salah Satu',1,3,'2026-03-26 13:21:22','2026-03-26 13:21:22'),
+(22,7,'Cognac','#33d17a',4199000.00,'Pilih Salah Satu',1,4,'2026-03-26 13:24:17','2026-03-26 13:24:17'),
+(23,8,'T¹','#99c1f1',2149000.00,'Bronze, Silver, Gold, Platium',1,0,'2026-03-26 13:34:58','2026-03-26 13:51:32'),
+(24,8,'E¹','#8ff0a4',1799000.00,'Bronze, Silver, Gold, Platium',1,2,'2026-03-26 13:41:12','2026-03-26 13:51:50'),
+(25,8,'B¹','#f9f06b',2449000.00,'Bronze, Silver, Gold, Platium',1,3,'2026-03-26 13:42:41','2026-03-26 13:52:01'),
+(26,8,'E²','#ffbe6f',1999000.00,'Bronze, Silver, Gold, Platium',1,4,'2026-03-26 13:44:30','2026-03-26 13:52:06'),
+(27,8,'T²','#f66151',2699000.00,'Bronze, Silver, Gold, Platium',1,5,'2026-03-26 13:46:41','2026-03-26 13:52:11'),
+(28,9,'Pupus Package','#33d17a',110000.00,NULL,1,0,'2026-03-26 13:56:30','2026-03-26 13:56:30'),
+(29,9,'Elang Package','#e01b24',130000.00,NULL,1,2,'2026-03-26 13:57:30','2026-03-26 13:57:30'),
+(30,9,'Arjuna Package','#613583',140000.00,NULL,1,3,'2026-03-26 13:57:57','2026-03-26 13:57:57'),
+(31,9,'Kirana Package','#deddda',150000.00,NULL,1,4,'2026-03-26 13:58:25','2026-03-26 13:58:25');
 /*!40000 ALTER TABLE `package_tiers` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
@@ -360,7 +404,7 @@ CREATE TABLE `packages` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -371,10 +415,12 @@ LOCK TABLES `packages` WRITE;
 /*!40000 ALTER TABLE `packages` DISABLE KEYS */;
 set autocommit=0;
 INSERT INTO `packages` VALUES
-(1,'Paket Hemat','Free Room 2 Jam','packages/AV4teiTZ2zFpQKYnUBDQXQWeZfzZjI5OADaPW1tV.jpg',2,1,1,'2026-03-04 11:05:23','2026-03-07 05:47:38'),
-(2,'Paket Asik','Free Room 3 Jam + Bonus Snack',NULL,3,1,2,'2026-03-04 11:05:23','2026-03-04 11:05:23'),
-(3,'Paket Family','Free Room 3 Jam untuk Keluarga',NULL,3,1,3,'2026-03-04 11:05:23','2026-03-04 11:05:23'),
-(4,'paket ramadhan','free room 3 hours','packages/TOhoRKO8gSVEAUxX7IvvTj1bhpV2yIwcn1HvAeZB.jpg',3,1,0,'2026-03-04 11:34:41','2026-03-05 09:26:50');
+(1,'Paket Hemat','Free Room 2 Jam','packages/sKoMm8jCR2E7D6N9ZOhQaA2qJgOcw6ByynlzcWGb.jpg',2,1,1,'2026-03-04 11:05:23','2026-03-26 12:44:19'),
+(5,'Paket Beer','Free Room 2 Jam','packages/5WRGHRgYNf76wO858bpP5r2CBkX9lGdN5YyEhZUX.jpg',2,1,2,'2026-03-26 12:19:46','2026-03-26 12:19:46'),
+(6,'Paket Wine','Free Room 2 Jam','packages/joWGmokiEGDJaOkoX6yKxQ8Svvox2zAe4ZKmX2F3.jpg',2,0,3,'2026-03-26 12:45:53','2026-03-31 09:03:30'),
+(7,'Paket Twin Bottle','Free Room 2 Jam','packages/JretCVEjd4d0AnTGWNtaU8jyRDaZINRSmm1ORZKe.jpg',2,0,4,'2026-03-26 12:48:34','2026-03-31 09:03:45'),
+(8,'Paket TEBET','Free Room 2 Jam','packages/BVXP2TXtQrf6qzqsalJBIpgZTn5YzFfqMjZmsoiP.jpg',2,0,5,'2026-03-26 13:26:43','2026-03-31 09:03:55'),
+(9,'Paket Buffe','Free Room 2 Jam','packages/wngoCt6nmUzb9m9OsFqolKmClHUXcoejNEjjRIeQ.jpg',2,1,6,'2026-03-26 13:55:08','2026-03-26 13:55:08');
 /*!40000 ALTER TABLE `packages` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
@@ -405,6 +451,43 @@ INSERT INTO `password_reset_tokens` VALUES
 ('aditya.neo5@gmail.com','$2y$12$y1WLcO0ms0ywEFKsrfBsMOUCbmsGxOPFmCUsci7nyPjDAu1Fd7ufG','2026-03-08 08:17:21'),
 ('admin@masterpiece.com','$2y$12$ukJOT1Lzo9EESFr8CTmE9O/APtydNg.NCVDsGdh1ELVo9YEk1vcmO','2026-03-08 07:50:17');
 /*!40000 ALTER TABLE `password_reset_tokens` ENABLE KEYS */;
+UNLOCK TABLES;
+commit;
+
+--
+-- Table structure for table `reservations`
+--
+
+DROP TABLE IF EXISTS `reservations`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8mb4 */;
+CREATE TABLE `reservations` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `customer_name` varchar(255) NOT NULL,
+  `phone_number` varchar(255) NOT NULL,
+  `booking_date` date NOT NULL,
+  `booking_time` time NOT NULL,
+  `duration_hours` int(11) NOT NULL DEFAULT 1,
+  `service_type` varchar(255) NOT NULL DEFAULT 'room',
+  `service_id` bigint(20) unsigned DEFAULT NULL,
+  `notes` text DEFAULT NULL,
+  `status` enum('pending','confirmed','completed','cancelled') NOT NULL DEFAULT 'pending',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `reservations`
+--
+
+LOCK TABLES `reservations` WRITE;
+/*!40000 ALTER TABLE `reservations` DISABLE KEYS */;
+set autocommit=0;
+INSERT INTO `reservations` VALUES
+(1,'peter','089693226048','2026-04-04','14:00:00',2,'package',5,NULL,'pending','2026-04-04 06:49:20','2026-04-04 06:49:20');
+/*!40000 ALTER TABLE `reservations` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
 
@@ -445,8 +528,8 @@ INSERT INTO `rooms` VALUES
 (5,'Room Bronze','small',2,4,89000.00,89000.00,'Room nyaman untuk bernyanyi berdua atau bersama sahabat dekat. Dilengkapi sistem audio berkualitas tinggi.','rooms/sXpDcDtiysn3bDA3I1gnD5jRW8RxQUInNgjKXjBY.jpg','[\"LED TV 43\\\"\",\"Sistem Audio Premium\",\"AC\",\"Sofa\",\"Mic 2 buah\"]',1,1,'2026-03-02 09:07:03','2026-03-02 09:52:56'),
 (6,'Room Silver','medium',4,6,119000.00,119000.00,'Pilihan terbaik untuk grup kecil. Ruangan luas dengan pencahayaan mood lighting yang bisa disesuaikan.','rooms/wczloC2Jp2w92M9buxdPQaW05yjK4WNGurv9qjKJ.jpg','[\"LED TV 42\\\"\",\"Sistem Audio Surround\",\"AC\",\"Sofa Panjang\",\"Mic 2 buah\",\"Mood Lighting\"]',1,2,'2026-03-02 09:07:03','2026-03-02 09:55:20'),
 (7,'Room Gold','large',6,8,159000.00,159000.00,'Room besar untuk pesta dan gathering keluarga. Space lega dengan panggung mini dan sistem audio terbaik.','rooms/Yg6ANvw4GTXVHmQBOemXqvMEG1l6F8oEgeNQCAIl.jpg','[\"LED TV 42\\\"\",\"Sistem Audio Theater\",\"AC\",\"Sofa + Kursi Extra\",\"Mic 2 buah\",\"Mood Lighting\",\"Disco Ball\"]',1,3,'2026-03-02 09:07:04','2026-03-02 10:02:09'),
-(8,'Room Platinum','vip',8,10,199000.00,199000.00,'Pengalaman karaoke premium dengan dekorasi eksklusif, sofa mewah, dan layanan prioritas. Cocok untuk acara spesial.','rooms/Wc0rtyWoLhohHB9vSMlueA5HLO0zMUUC9X1d4Sfk.jpg','[\"Smart TV 42\\\"\",\"Sistem Audio JBL Pro\",\"AC Inverter\",\"Sofa Kulit Mewah\",\"Mic Wireless 2 buah\",\"Mood Lighting RGB\",\"Disco Ball\"]',1,4,'2026-03-02 09:07:04','2026-03-02 09:58:01'),
-(9,'Room Diamond','vip',13,15,299000.00,299000.00,'Room Diamond','rooms/4zpR2K2smCnUVOG83Xxj4sLhl8lks6YAQJqvB9D5.jpg','[\"2 LED TV 42\\\"\",\"Monitor TV 32\\\"\",\"Sistem Audio Surround\",\"AC\",\"Sofa Panjang\",\"Mic 2 buah\",\"Mood Lighting\"]',1,5,'2026-03-02 09:59:59','2026-03-02 10:06:47'),
+(8,'Room Platinum','large',8,10,199000.00,199000.00,'Pengalaman karaoke premium dengan dekorasi eksklusif, sofa mewah, dan layanan prioritas. Cocok untuk acara spesial.','rooms/Wc0rtyWoLhohHB9vSMlueA5HLO0zMUUC9X1d4Sfk.jpg','[\"Smart TV 42\\\"\",\"Sistem Audio JBL Pro\",\"AC Inverter\",\"Sofa Kulit Mewah\",\"Mic Wireless 2 buah\",\"Mood Lighting RGB\",\"Disco Ball\"]',1,4,'2026-03-02 09:07:04','2026-03-26 13:54:08'),
+(9,'Room Diamond','large',13,15,299000.00,299000.00,'Room Diamond','rooms/4zpR2K2smCnUVOG83Xxj4sLhl8lks6YAQJqvB9D5.jpg','[\"2 LED TV 42\\\"\",\"Monitor TV 32\\\"\",\"Sistem Audio Surround\",\"AC\",\"Sofa Panjang\",\"Mic 2 buah\",\"Mood Lighting\"]',1,5,'2026-03-02 09:59:59','2026-03-26 13:54:17'),
 (10,'Room VIP','vip',18,20,399000.00,399000.00,'Room Vip','rooms/X4Godvych4zONTtL4WMkgym90e6Iu24upnEesCRu.jpg','[\"2 LED TV 42\\\"\",\"Monitor TV 32\\\"\",\"Sistem Audio Theater\",\"AC\",\"Sofa + Kursi Extra\",\"Mic 3 buah\",\"Mood Lighting\",\"Disco Ball\",\"Private Toilet\"]',1,6,'2026-03-02 10:01:45','2026-03-02 10:01:45'),
 (11,'Room VIP Signature','vip',18,20,499000.00,499000.00,'Room Vip Signature','rooms/b0THijirhYjTHFlxhmTjJi9BqZ8nvRT4HxW9T9IN.jpg','[\"Smart TV 75\\\"\",\"Sistem Audio TurboSound Pro\",\"AC Inverter\",\"Sofa Kulit Mewah\",\"Mic Wireless 3 buah\",\"Mood Lighting RGB\",\"Disco Ball\"]',1,7,'2026-03-02 10:04:20','2026-03-02 10:07:14'),
 (12,'Room VVIP','vip',23,25,599000.00,599000.00,'Room VVIP','rooms/Pt9E3jiux6iyMdLu2H6upYMXDEi3L4GG448gOvio.jpg','[\"2 LED TV 42\\\"\",\"Monitor TV 32\\\"\",\"Sistem Audio Theater\",\"AC\",\"Sofa + Kursi Extra\",\"Mic 3 buah\",\"Mood Lighting\",\"Disco Ball\",\"Private Toilet\"]',1,8,'2026-03-02 10:05:34','2026-03-02 10:07:24'),
@@ -483,8 +566,7 @@ LOCK TABLES `sessions` WRITE;
 /*!40000 ALTER TABLE `sessions` DISABLE KEYS */;
 set autocommit=0;
 INSERT INTO `sessions` VALUES
-('9L9o332NUhysfWULnGdMqkINZ5z78C0sNBH2Gkfl',NULL,'127.0.0.1','Mozilla/5.0 (X11; Linux x86_64; rv:140.0) Gecko/20100101 Firefox/140.0','YTozOntzOjY6Il90b2tlbiI7czo0MDoiSEZrZ3BHekxNT2hwNWVqaFNTeUxyZUI1ZFNiYzdIbUUzczh1NkV5RiI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6Mjp7czozOiJ1cmwiO3M6Mjc6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9sb2dpbiI7czo1OiJyb3V0ZSI7czo1OiJsb2dpbiI7fX0=',1772983653),
-('C1nxEqxMvl5ip2xp5uTp3DOPqOGta0xXJtzqJLCM',NULL,'127.0.0.1','Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36','YTozOntzOjY6Il90b2tlbiI7czo0MDoiOVZrcEJLYURyZ3FuVkZiTEc2dTNtZHVxYU5PZWhXc1VPNTU1YXhPSSI7czo5OiJfcHJldmlvdXMiO2E6Mjp7czozOiJ1cmwiO3M6MjE6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMCI7czo1OiJyb3V0ZSI7czo0OiJob21lIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==',1772985618);
+('EuQ6IJ8X63Pip4q4EcZCyhQpbBXsyY72UCWWdG2I',1,'127.0.0.1','Mozilla/5.0 (X11; Linux x86_64; rv:140.0) Gecko/20100101 Firefox/140.0','YTo2OntzOjY6Il90b2tlbiI7czo0MDoiVVRwR24xNVpuTWl6UzY1SlZMYjdxbFZJWW5CSzAxZG5YMGdhdXhPRiI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6Mjp7czozOiJ1cmwiO3M6MjE6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMCI7czo1OiJyb3V0ZSI7czo0OiJob21lIjt9czozOiJ1cmwiO2E6MDp7fXM6NTA6ImxvZ2luX3dlYl81OWJhMzZhZGRjMmIyZjk0MDE1ODBmMDE0YzdmNThlYTRlMzA5ODlkIjtpOjE7czoxODoibGFzdF9hY3Rpdml0eV90aW1lIjtpOjE3NzUzMTIzODA7fQ==',1775313385);
 /*!40000 ALTER TABLE `sessions` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
@@ -505,7 +587,7 @@ CREATE TABLE `tier_includes` (
   PRIMARY KEY (`id`),
   KEY `tier_includes_package_tier_id_foreign` (`package_tier_id`),
   CONSTRAINT `tier_includes_package_tier_id_foreign` FOREIGN KEY (`package_tier_id`) REFERENCES `package_tiers` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=43 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=185 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -516,48 +598,71 @@ LOCK TABLES `tier_includes` WRITE;
 /*!40000 ALTER TABLE `tier_includes` DISABLE KEYS */;
 set autocommit=0;
 INSERT INTO `tier_includes` VALUES
-(1,1,'Ice Lemon Tea','1 Pitcher',0),
-(2,1,'Pisang Goreng','1 Porsi',1),
-(3,1,'Tahu Lada Garam','1 Porsi',2),
-(4,2,'Ice Lemon Tea','1 Pitcher',0),
-(5,2,'Orange Juice','1 Glass',1),
-(6,2,'Pisang Goreng','1 Porsi',2),
-(7,2,'Tahu Lada Garam','1 Porsi',3),
-(8,3,'Ice Lemon Tea','2 Pitcher',0),
-(9,3,'Pisang Goreng','1 Porsi',1),
-(10,3,'Tahu Lada Garam','1 Porsi',2),
-(11,4,'Ice Lemon Tea','1 Pitcher',0),
-(12,4,'Pisang Goreng','1 Porsi',1),
-(13,4,'French Fries','1 Porsi',2),
-(14,5,'Ice Lemon Tea','1 Pitcher',0),
-(15,5,'Orange Juice','1 Glass',1),
-(16,5,'Pisang Goreng','1 Porsi',2),
-(17,5,'French Fries','1 Porsi',3),
-(18,5,'Tahu Lada Garam','1 Porsi',4),
-(19,6,'Ice Lemon Tea','2 Pitcher',0),
-(20,6,'Orange Juice','2 Glass',1),
-(21,6,'Pisang Goreng','2 Porsi',2),
-(22,6,'French Fries','1 Porsi',3),
-(23,6,'Tahu Lada Garam','1 Porsi',4),
-(24,6,'Chicken Pop','1 Porsi',5),
-(25,7,'Ice Lemon Tea','2 Pitcher',0),
-(26,7,'Pisang Goreng','2 Porsi',1),
-(27,7,'French Fries','1 Porsi',2),
-(28,7,'Tahu Lada Garam','1 Porsi',3),
-(29,8,'Ice Lemon Tea','2 Pitcher',0),
-(30,8,'Orange Juice','2 Glass',1),
-(31,8,'Pisang Goreng','2 Porsi',2),
-(32,8,'French Fries','2 Porsi',3),
-(33,8,'Tahu Lada Garam','1 Porsi',4),
-(34,9,'Ice Lemon Tea','3 Pitcher',0),
-(35,9,'Orange Juice','2 Glass',1),
-(36,9,'Pisang Goreng','2 Porsi',2),
-(37,9,'French Fries','2 Porsi',3),
-(38,9,'Tahu Lada Garam','1 Porsi',4),
-(39,9,'Chicken Pop','1 Porsi',5),
-(40,9,'Free Dekorasi','1 Set',6),
-(41,10,'nangka','1 buah',0),
-(42,11,'sda','2',0);
+(57,15,'Balihai/Draft Pin','2 Botol',0),
+(58,15,'Guinness Pin','1 Botol',1),
+(59,15,'Chicken Skin','1 Porsi',2),
+(60,15,'Cigarrete','1 Bungkus',3),
+(61,16,'Balihai/Draft Pin','3 Botol',0),
+(62,16,'Guinness Pin','2 Botol',1),
+(63,16,'Chicken Skin','1 Porsi',2),
+(64,16,'Cigarrete','1 Bungkus',3),
+(65,17,'Balihai/Draft Pin','3 Botol',0),
+(66,17,'Guinness Pin','3 Botol',1),
+(67,17,'Chicken Skin','1 Porsi',2),
+(68,17,'Cigarrete','1 Bungkus',3),
+(69,12,'Ice Lemon Tea','1 Pitcher',0),
+(70,12,'Pisang Goreng','1 Porsi',1),
+(71,12,'Cireng Isi Mix','1 Porsi',2),
+(72,13,'Ice Lemon Tea','1 Pitcher',0),
+(73,13,'Orange Juice','1 Glass',1),
+(74,13,'Pisang Goreng','1 Porsi',2),
+(75,13,'Cireng Isi Mix','1 Porsi',3),
+(76,14,'Ice Lemon Tea','2 Pitcher',0),
+(77,14,'Pisang Goreng','1 Porsi',1),
+(78,14,'Cireng Isi Mix','1 Porsi',2),
+(79,18,'Wine Sababay','2 Botol',0),
+(100,21,'Hendrick\'s','2 Botol',0),
+(101,20,'Jose Cuervo','2 Botol',0),
+(102,20,'Greygouse','2 Botol',1),
+(103,19,'Chivas Regal 12','2 Botol',0),
+(104,19,'Black Label','2 Botol',1),
+(105,19,'Jack Daniels','2 Botol',2),
+(106,19,'Red Label','2 Botol',3),
+(107,19,'Jameson','2 Botol',4),
+(108,19,'Singleton 12','2 Botol',5),
+(109,19,'Glenfiddich 12','2 Botol',6),
+(110,19,'Glenlivet 12','2 Botol',7),
+(111,19,'Macallan 12','2 Botol',8),
+(112,22,'Camus Martel','2 Botol',0),
+(113,22,'Martel 750','2 Botol',1),
+(114,22,'Hennessy Vsop 750','2 Botol',2),
+(115,22,'Hennessy Vsop 1000','2 Botol',3),
+(159,23,'Chivas/Black Label/Greygouse','1 Botol',0),
+(160,23,'Cigarrete','1 Bungkus',1),
+(161,23,'Kacang','1 Porsi',2),
+(162,23,'Fresh Fruit','1 Porsi',3),
+(163,23,'Mixer','2 Can',4),
+(164,24,'Red Label/Tequilla','1 Botol',0),
+(165,24,'Cigarrete','1 Bungkus',1),
+(166,24,'Kacang','1 Porsi',2),
+(167,24,'Fresh Fruit','1 Porsi',3),
+(168,24,'Sliced Lime','1 Porsi',4),
+(169,24,'Mixer','2 Can',5),
+(170,25,'Singleton 12/Gleenfiddich 12/Glenlivet12','1 Botol',0),
+(171,25,'Cigarrete','1 Bungkus',1),
+(172,25,'Kacang','1 Porsi',2),
+(173,25,'Fresh Fruit','1 Porsi',3),
+(174,25,'Mixer','2 Can',4),
+(175,26,'Jameson/Jack Daniel\'s','1 Botol',0),
+(176,26,'Cigarrete','1 Bungkus',1),
+(177,26,'Kacang','1 Porsi',2),
+(178,26,'Fresh Fruit','1 Porsi',3),
+(179,26,'Mixer','2 Can',4),
+(180,27,'Martel Vsop','1 Botol',0),
+(181,27,'Cigarrete','1 Bungkus',1),
+(182,27,'Mixer','2 Can',2),
+(183,27,'Kacang','1 Porsi',3),
+(184,27,'Fresh Fruit','1 Porsi',4);
 /*!40000 ALTER TABLE `tier_includes` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
@@ -607,4 +712,4 @@ commit;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*M!100616 SET NOTE_VERBOSITY=@OLD_NOTE_VERBOSITY */;
 
--- Dump completed on 2026-03-08 23:06:22
+-- Dump completed on 2026-04-04 21:43:35
