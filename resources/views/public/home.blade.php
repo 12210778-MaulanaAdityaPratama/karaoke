@@ -449,6 +449,36 @@
     .fnb-tabs { overflow-x: auto; }
 }
 
+@media(min-width: 992px) {
+    .fnb-list {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        column-gap: 4rem;
+        align-items: start;
+    }
+}
+
+.fnb-item.hidden { display: none; }
+.btn-fnb-more {
+    display: block;
+    margin: 2.5rem auto 0;
+    font-family: var(--ff-body);
+    font-size: 0.72rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--neon-pink);
+    background: transparent;
+    border: 1px solid rgba(255,45,120,0.4);
+    padding: 0.8rem 2.2rem;
+    cursor: pointer;
+    transition: all .25s;
+}
+.btn-fnb-more:hover {
+    background: rgba(255,45,120,0.1);
+    box-shadow: 0 0 20px rgba(255,45,120,0.2);
+    border-color: var(--neon-pink);
+}
+
 /* ══════════════════════════════════════════════
    GALLERY PREVIEW
 ══════════════════════════════════════════════ */
@@ -813,8 +843,8 @@
         @foreach($fnbCategories as $i => $cat)
         <div class="fnb-panel {{ $i === 0 ? 'active' : '' }}" id="cat-{{ $cat->id }}">
             <div class="fnb-list">
-                @foreach($cat->activeItems as $item)
-                <div class="fnb-item {{ !$item->is_available ? 'unavail' : '' }}">
+                @foreach($cat->activeItems as $idx => $item)
+                <div class="fnb-item {{ !$item->is_available ? 'unavail' : '' }} {{ $idx >= 10 ? 'hidden' : '' }}">
                     <div>
                         <div class="fnb-item-name">
                             {{ $item->name }}
@@ -830,6 +860,12 @@
                 </div>
                 @endforeach
             </div>
+
+            @if($cat->activeItems->count() > 10)
+                <button class="btn-fnb-more" onclick="toggleFnbItems(this, 'cat-{{ $cat->id }}')">
+                    Lihat Semua (+{{ $cat->activeItems->count() - 10 }})
+                </button>
+            @endif
         </div>
         @endforeach
     </div>
@@ -865,25 +901,34 @@
                     </div>
 
                     <div class="book-group">
-                        <label>Pilih Layanan *</label>
-                        <select name="service_choice" required>
-                            <option value="" hidden>-- Pilih Room atau Paket --</option>
-                            <optgroup label="Daftar Room">
-                                @foreach($rooms as $r)
-                                    <option value="room_{{ $r->id }}" {{ old('service_choice') == 'room_'.$r->id ? 'selected' : '' }}>
-                                        Room {{ $r->name }} ({{ $r->getCapacityLabel() }})
-                                    </option>
-                                @endforeach
-                            </optgroup>
-                            <optgroup label="Daftar Paket">
-                                @foreach($packages as $p)
-                                    <option value="package_{{ $p->id }}" {{ old('service_choice') == 'package_'.$p->id ? 'selected' : '' }}>
-                                        Paket {{ $p->name }} ({{ $p->duration_hours }} Jam)
-                                    </option>
-                                @endforeach
-                            </optgroup>
+                        <label>Pilih Room *</label>
+                        <select name="room_id" required>
+                            <option value="" hidden>-- Pilih Room (Gold s/d Solitaire) --</option>
+                            @foreach($rooms as $r)
+                                @if(stripos($r->name, 'Bronze') === false && stripos($r->name, 'Silver') === false)
+                                <option value="{{ $r->id }}" {{ old('room_id') == $r->id ? 'selected' : '' }}>
+                                    Room {{ $r->name }} ({{ $r->getCapacityLabel() }})
+                                </option>
+                                @endif
+                            @endforeach
                         </select>
-                        @error('service_choice') <span class="err">{{ $message }}</span> @enderror
+                        <p style="font-size:0.75rem; color:var(--neon-pink); margin-top:0.4rem;">
+                            <i>*Note: Reservasi Room minimal berlaku untuk 7 orang.</i>
+                        </p>
+                        @error('room_id') <span class="err">{{ $message }}</span> @enderror
+                    </div>
+
+                    <div class="book-group">
+                        <label>Pilih Paket (Opsional)</label>
+                        <select name="package_id">
+                            <option value="">-- Tanpa Paket / Reguler --</option>
+                            @foreach($packages as $p)
+                                <option value="{{ $p->id }}" {{ old('package_id') == $p->id ? 'selected' : '' }}>
+                                    Paket {{ $p->name }} ({{ $p->duration_hours }} Jam)
+                                </option>
+                            @endforeach
+                        </select>
+                        @error('package_id') <span class="err">{{ $message }}</span> @enderror
                     </div>
 
                     <div class="book-group">
@@ -1106,6 +1151,35 @@ function switchTab(btn, tabId) {
     document.querySelectorAll('.fnb-panel').forEach(p => p.classList.remove('active'));
     btn.classList.add('active');
     document.getElementById(tabId).classList.add('active');
+}
+
+function toggleFnbItems(btn, panelId) {
+    const items = document.querySelectorAll('#' + panelId + ' .fnb-item.hidden');
+    const allItems = document.querySelectorAll('#' + panelId + ' .fnb-item');
+    const isExpanding = btn.textContent.includes('Lihat Semua');
+
+    if (isExpanding) {
+        items.forEach(item => {
+            item.classList.remove('hidden');
+            item.style.opacity = '0';
+            item.style.transform = 'translateY(10px)';
+            setTimeout(() => {
+                item.style.transition = 'all .3s ease';
+                item.style.opacity = '1';
+                item.style.transform = 'translateY(0)';
+            }, 10);
+        });
+        btn.textContent = 'Tutup Menu';
+    } else {
+        allItems.forEach((item, idx) => {
+            if (idx >= 10) {
+                item.classList.add('hidden');
+            }
+        });
+        btn.textContent = 'Lihat Semua (+' + (allItems.length - 10) + ')';
+        // Scroll back to top of tabs if closing
+        document.getElementById('fnb').scrollIntoView({ behavior: 'smooth' });
+    }
 }
 
 // Smooth scroll untuk anchor links pada navbar

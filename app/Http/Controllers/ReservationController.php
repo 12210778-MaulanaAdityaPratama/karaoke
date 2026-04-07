@@ -20,24 +20,10 @@ class ReservationController extends Controller
             'booking_date'   => 'required|date|after_or_equal:today',
             'booking_time'   => 'required',
             'duration_hours' => 'required|integer|min:1|max:12',
-            'service_choice' => 'required|string', // Format: "room_1" atau "package_2"
+            'room_id'        => 'required|exists:rooms,id',
+            'package_id'     => 'nullable|exists:packages,id',
             'notes'          => 'nullable|string|max:500',
         ]);
-
-        // Parse service_choice
-        $choiceParts = explode('_', $request->service_choice);
-        $serviceType = $choiceParts[0]; // 'room' atau 'package'
-        $serviceId   = isset($choiceParts[1]) ? (int)$choiceParts[1] : null;
-
-        // Ambil nama layanan untuk teks WhatsApp
-        $serviceName = 'Layanan Lainnya';
-        if ($serviceType === 'room' && $serviceId) {
-            $room = Room::find($serviceId);
-            if ($room) $serviceName = 'Room ' . $room->name;
-        } elseif ($serviceType === 'package' && $serviceId) {
-            $package = Package::find($serviceId);
-            if ($package) $serviceName = 'Paket ' . $package->name;
-        }
 
         // 1. Simpan ke Database
         Reservation::create([
@@ -46,13 +32,19 @@ class ReservationController extends Controller
             'booking_date'   => $request->booking_date,
             'booking_time'   => $request->booking_time,
             'duration_hours' => $request->duration_hours,
-            'service_type'   => $serviceType,
-            'service_id'     => $serviceId,
+            'room_id'        => $request->room_id,
+            'package_id'     => $request->package_id,
             'notes'          => $request->notes,
             'status'         => 'pending'
         ]);
 
         // 2. Generate Teks WhatsApp
+        $room = Room::find($request->room_id);
+        $package = $request->package_id ? Package::find($request->package_id) : null;
+        
+        $roomStr = $room ? 'Room ' . $room->name : 'N/A';
+        $packageStr = $package ? 'Paket ' . $package->name : 'Reguler';
+
         $adminPhone = '6287770851998'; // Nomor WA Admin Masterpiece
         
         $text = "*Halo Masterpiece, saya ingin reservasi:*\n\n";
@@ -61,13 +53,15 @@ class ReservationController extends Controller
         $text .= "Tanggal: *" . \Carbon\Carbon::parse($request->booking_date)->format('d M Y') . "*\n";
         $text .= "Jam: *" . $request->booking_time . " WIB*\n";
         $text .= "Durasi: *" . $request->duration_hours . " Jam*\n";
-        $text .= "Pilihan: *" . $serviceName . "*\n";
+        $text .= "Pilihan Room: *" . $roomStr . "*\n";
+        $text .= "Pilihan Paket: *" . $packageStr . "*\n";
         
         if ($request->notes) {
-            $text .= "Catatan: " . $request->notes . "\n";
+            $text .= "Catatan Tambahan: " . $request->notes . "\n";
         }
         
-        $text .= "\n*Mohon info ketersediaannya. Terima kasih.*";
+        $text .= "\n*Mohon info ketersediaannya. Terima kasih.*\n\n";
+        $text .= "_Di mohon untuk kedatangan nya di tepat waktu 15 sebelum waktu reservasi :) apabila tidak ada konfirmasi/nomor tidak dapat di hubungi setelah lewat dari jam reservasi kami akan cancel otomatis._\n*Terimakasih*";
 
         $waUrl = "https://wa.me/{$adminPhone}?text=" . urlencode($text);
 

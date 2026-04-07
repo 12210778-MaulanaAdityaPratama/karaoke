@@ -306,7 +306,7 @@ CREATE TABLE `migrations` (
   `migration` varchar(255) NOT NULL,
   `batch` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -325,7 +325,8 @@ INSERT INTO `migrations` VALUES
 (6,'2024_01_01_000003_create_fnb_tables',1),
 (7,'2026_03_05_155219_add_image_to_packages',2),
 (8,'2026_04_04_000001_create_gallery_photos_table',3),
-(9,'2026_04_04_000002_create_reservations_table',4);
+(9,'2026_04_04_000002_create_reservations_table',4),
+(11,'2026_04_04_155757_alter_reservations_service_fields_table',5);
 /*!40000 ALTER TABLE `migrations` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
@@ -468,14 +469,14 @@ CREATE TABLE `reservations` (
   `booking_date` date NOT NULL,
   `booking_time` time NOT NULL,
   `duration_hours` int(11) NOT NULL DEFAULT 1,
-  `service_type` varchar(255) NOT NULL DEFAULT 'room',
-  `service_id` bigint(20) unsigned DEFAULT NULL,
+  `room_id` bigint(20) unsigned DEFAULT NULL,
+  `package_id` bigint(20) unsigned DEFAULT NULL,
   `notes` text DEFAULT NULL,
   `status` enum('pending','confirmed','completed','cancelled') NOT NULL DEFAULT 'pending',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -486,7 +487,8 @@ LOCK TABLES `reservations` WRITE;
 /*!40000 ALTER TABLE `reservations` DISABLE KEYS */;
 set autocommit=0;
 INSERT INTO `reservations` VALUES
-(1,'peter','089693226048','2026-04-04','14:00:00',2,'package',5,NULL,'pending','2026-04-04 06:49:20','2026-04-04 06:49:20');
+(1,'peter','089693226048','2026-04-04','14:00:00',2,NULL,NULL,NULL,'pending','2026-04-04 06:49:20','2026-04-04 06:49:20'),
+(2,'peter','089693226048','2026-04-04','22:30:00',2,7,NULL,'testing','pending','2026-04-04 09:03:28','2026-04-04 09:03:28');
 /*!40000 ALTER TABLE `reservations` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
@@ -566,7 +568,7 @@ LOCK TABLES `sessions` WRITE;
 /*!40000 ALTER TABLE `sessions` DISABLE KEYS */;
 set autocommit=0;
 INSERT INTO `sessions` VALUES
-('EuQ6IJ8X63Pip4q4EcZCyhQpbBXsyY72UCWWdG2I',1,'127.0.0.1','Mozilla/5.0 (X11; Linux x86_64; rv:140.0) Gecko/20100101 Firefox/140.0','YTo2OntzOjY6Il90b2tlbiI7czo0MDoiVVRwR24xNVpuTWl6UzY1SlZMYjdxbFZJWW5CSzAxZG5YMGdhdXhPRiI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6Mjp7czozOiJ1cmwiO3M6MjE6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMCI7czo1OiJyb3V0ZSI7czo0OiJob21lIjt9czozOiJ1cmwiO2E6MDp7fXM6NTA6ImxvZ2luX3dlYl81OWJhMzZhZGRjMmIyZjk0MDE1ODBmMDE0YzdmNThlYTRlMzA5ODlkIjtpOjE7czoxODoibGFzdF9hY3Rpdml0eV90aW1lIjtpOjE3NzUzMTIzODA7fQ==',1775313385);
+('yOSmj6eHyf065BQZsXQH6Xe8xNRYw6zND6fWFMjx',NULL,'127.0.0.1','Mozilla/5.0 (X11; Linux x86_64; rv:140.0) Gecko/20100101 Firefox/140.0','YTozOntzOjY6Il90b2tlbiI7czo0MDoiajV2Y1BacE1DbFc5U3Rkam1MNks2bFRnZFJLMG5LNDZYS1A3MW8yZiI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6Mjp7czozOiJ1cmwiO3M6MjE6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMCI7czo1OiJyb3V0ZSI7czo0OiJob21lIjt9fQ==',1775318638);
 /*!40000 ALTER TABLE `sessions` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
@@ -712,4 +714,4 @@ commit;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*M!100616 SET NOTE_VERBOSITY=@OLD_NOTE_VERBOSITY */;
 
--- Dump completed on 2026-04-04 21:43:35
+-- Dump completed on 2026-04-04 23:05:00

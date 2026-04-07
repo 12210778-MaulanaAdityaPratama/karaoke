@@ -88,12 +88,16 @@
                     <div class="resv-meta">⏱ Durasi: <span>{{ $resv->duration_hours }} Jam</span></div>
                 </td>
                 <td>
-                    @if($resv->service_type === 'room' && $resv->room)
-                        <span class="pill pill-purp">Room: {{ $resv->room->name }}</span>
-                    @elseif($resv->service_type === 'package' && $resv->package)
+                    @if($resv->room)
+                        <span class="pill pill-purp" style="margin-bottom:0.25rem; display:inline-block;">Room: {{ $resv->room->name }}</span>
+                    @else
+                        <span class="pill pill-purp" style="margin-bottom:0.25rem; display:inline-block; opacity:0.5;">Room Dihapus</span>
+                    @endif
+                    <br>
+                    @if($resv->package)
                         <span class="pill pill-pink">Paket: {{ $resv->package->name }}</span>
                     @else
-                        <span class="pill pill-gold">Layanan Lain/Dihapus</span>
+                        <span class="pill pill-cyan">Paket: Reguler</span>
                     @endif
                     
                     @if($resv->notes)

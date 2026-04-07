@@ -96,11 +96,32 @@
         .form-panel { background: var(--bg-card); border: 1px solid var(--border); padding: 2rem; }
         .form-footer { display: flex; gap: 0.75rem; padding-top: 1.5rem; margin-top: 0.5rem; border-top: 1px solid var(--border); }
 
-        @media(max-width:768px) { .sidebar { transform: translateX(-100%); } .main { margin-left: 0; padding: 1.25rem; } .form-row { grid-template-columns: 1fr; } }
+        .mobile-header { display: none; align-items: center; justify-content: space-between; padding: 1rem 1.25rem; background: var(--bg-2); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 1000; }
+        .mobile-header-brand { font-family: var(--ff-display); font-size: 1.1rem; letter-spacing: 0.1em; color: var(--text); text-decoration: none; }
+        .mobile-header-brand span { color: var(--neon-pink); }
+        .mobile-toggle { background: none; border: none; color: var(--text); font-size: 1.5rem; cursor: pointer; display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; }
+
+        @media(max-width:768px) { 
+            body { flex-direction: column; }
+            .sidebar { transform: translateX(-100%); transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); z-index: 1100; position: fixed; height: 100vh; } 
+            .sidebar.active { transform: translateX(0); box-shadow: 10px 0 30px rgba(0,0,0,0.5); }
+            .main { margin-left: 0; padding: 1.25rem; width: 100%; } 
+            .form-row { grid-template-columns: 1fr; } 
+            .mobile-header { display: flex; width: 100%; box-sizing: border-box; }
+            .sidebar-overlay { none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(4px); z-index: 1050; opacity: 0; pointer-events: none; transition: opacity 0.3s; }
+            .sidebar-overlay.active { opacity: 1; pointer-events: auto; display: block; }
+        }
     </style>
     @stack('styles')
 </head>
 <body>
+
+<div class="mobile-header">
+    <a href="{{ route('admin.reservations.index') }}" class="mobile-header-brand">MASTER<span>PIECE</span></a>
+    <button class="mobile-toggle" id="sidebarToggle">☰</button>
+</div>
+
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
 
 <aside class="sidebar">
     <div class="sidebar-brand">
@@ -133,6 +154,36 @@
 
     @yield('content')
 </main>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const sidebar = document.querySelector('.sidebar');
+        const toggle = document.getElementById('sidebarToggle');
+        const overlay = document.getElementById('sidebarOverlay');
+
+        if (toggle && sidebar && overlay) {
+            toggle.addEventListener('click', function() {
+                sidebar.classList.toggle('active');
+                overlay.classList.toggle('active');
+            });
+
+            overlay.addEventListener('click', function() {
+                sidebar.classList.remove('active');
+                overlay.classList.remove('active');
+            });
+
+            // Close sidebar when clicking links on mobile
+            const sidebarLinks = sidebar.querySelectorAll('a');
+            sidebarLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    sidebar.classList.remove('active');
+                    overlay.classList.remove('active');
+                });
+            });
+        }
+    });
+</script>
+
 @stack('scripts')
 </body>
 </html>

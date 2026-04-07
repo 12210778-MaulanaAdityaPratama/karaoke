@@ -24,7 +24,6 @@ class FnbController extends Controller
         $data = $request->validate([
             'name'       => 'required|string|max:100',
             'icon'       => 'nullable|string|max:10',
-            'is_active'  => 'boolean',
             'sort_order' => 'integer|min:0',
         ]);
         $data['slug']      = Str::slug($data['name']);
